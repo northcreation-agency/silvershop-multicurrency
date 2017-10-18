@@ -1,0 +1,36 @@
+#
+# Product Currencies settings
+#
+Currency:
+  currency_symbol: ''
+ProductMultiCurrency:
+  default_currency: 'USD'
+  domains:
+    #local server
+    mysite.dev:
+      currencies:
+        - USD
+        - EUR    
+    #test server
+    mysite.test.com:
+      currencies:
+        - USD
+        - EUR    
+    #live server
+    mysite.com:
+      currencies:
+        - USD
+        - EUR    
+
+
+Product:
+  extensions:
+    - ProductMultiCurrency
+
+ProductVariation:
+  extensions:    
+    - ProductMultiCurrency
+
+Order:
+  extensions:
+    - OrderFluentExtension # order extra locale and currency fields
