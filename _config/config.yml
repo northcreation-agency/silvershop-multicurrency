@@ -2,35 +2,35 @@
 # Product Currencies settings
 #
 Currency:
-  currency_symbol: ''
+  currency_symbol: '' # Reset default $
 ProductMultiCurrency:
   default_currency: 'USD'
-  domains:
+#  domains:
     #local server
-    mysite.dev:
-      currencies:
-        - USD
-        - EUR    
+    #mysite.dev:
+    #  currencies:
+    #    - USD
+    #    - EUR
     #test server
-    mysite.test.com:
-      currencies:
-        - USD
-        - EUR    
+    #mysite.test.com:
+    #  currencies:
+    #    - USD
+    #    - EUR
     #live server
-    mysite.com:
-      currencies:
-        - USD
-        - EUR    
+    #mysite.com:
+    #  currencies:
+    #    - USD
+    #    - EUR
 
 
 Product:
   extensions:
-    - ProductMultiCurrency
+    - SilverShop\MultiCurrency\ProductMultiCurrency
 
 ProductVariation:
   extensions:    
-    - ProductMultiCurrency
+    - SilverShop\MultiCurrency\ProductMultiCurrency
 
 Order:
   extensions:
-    - OrderFluentExtension # order extra locale and currency fields
+    - SilverShop\MultiCurrency\OrderExtension

@@ -1,6 +1,8 @@
 <?php
 
-class ProductMultiCurrency extends DataExtension
+namespace SilverShop\MultiCurrency;
+
+class ProductMultiCurrency extends \DataExtension
 {
     /*
      * Gets selling price depending on domain name
@@ -16,7 +18,7 @@ class ProductMultiCurrency extends DataExtension
     /*
      * Setup CMS fields
      */
-    public function updateCMSFields(FieldList $fields)
+    public function updateCMSFields(\FieldList $fields)
     {
         if (is_a($this->owner, 'Product')) {
             $tab = $fields->findOrMakeTab('Root.Pricing');
@@ -30,7 +32,7 @@ class ProductMultiCurrency extends DataExtension
 
         $availableCurrencies = self::get_currencies();
         foreach ($availableCurrencies as $currency) {
-            $tab->push(CurrencyField::create('BasePrice_'.$currency, $currency));
+            $tab->push(\CurrencyField::create('BasePrice_'.$currency, $currency));
         }
     }
 
@@ -39,16 +41,16 @@ class ProductMultiCurrency extends DataExtension
      */
     public static function get_current_currency()
     {
-        $force_domain = Controller::curr()->getRequest()->requestVar('force_domain');
+        $force_domain = \Controller::curr()->getRequest()->requestVar('force_domain');
         $currentDomain = $force_domain ? $force_domain : strtolower($_SERVER['HTTP_HOST']);
-        $domains = Config::inst()->get('ProductMultiCurrency', 'domains');
+        $domains = \Config::inst()->get('ProductMultiCurrency', 'domains');
 
         if (isset($domains[$currentDomain])
             && isset($domains[$currentDomain]['currencies'])
         ) {
-            $selectedCurrency = Session::get('currency');
+            $selectedCurrency = \Session::get('currency');
             $currency = array_search(
-                Session::get('currency'),
+                \Session::get('currency'),
                 $domains[$currentDomain]['currencies']
             );
 
@@ -58,7 +60,7 @@ class ProductMultiCurrency extends DataExtension
                 $currency = $domains[$currentDomain]['currencies'][0];
             }
         } else {
-            $currency = Config::inst()->get('ProductMultiCurrency', 'default_currency');
+            $currency = \Config::inst()->get('ProductMultiCurrency', 'default_currency');
         }
 
         return $currency;
@@ -69,7 +71,7 @@ class ProductMultiCurrency extends DataExtension
      */
     public static function get_currencies()
     {
-        $domains = Config::inst()->get('ProductMultiCurrency', 'domains');
+        $domains = \Config::inst()->get('ProductMultiCurrency', 'domains');
 
         // collect available currencies from domain settings
         $availableCurrencies = [];
@@ -89,7 +91,7 @@ class ProductMultiCurrency extends DataExtension
     public static function get_extra_config($class, $extension, $args)
     {
         // Force all subclass DB caches to invalidate themselves since their db attribute is now expired
-        DataObject::reset();
+        \DataObject::reset();
 
         // collect available currencies from domain settings
         $availableCurrencies = self::get_currencies();
