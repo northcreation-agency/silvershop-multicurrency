@@ -1,0 +1,21 @@
+{
+	"name": "kreationsbyran/silvershop-multicurrency",
+	"description": "Allows multi currency for the Silvershop module",
+	"type": "silverstripe-module",
+	"keywords": [
+		"silverstripe",
+		"module"
+	],
+	"authors" : [
+		{
+			"name" : "Contributors",
+			"homepage" : "https://github.com/kreationsbyran/silvershop-multicurrency/graphs/contributors"
+		}
+	],
+	"license": "BSD-3-Clause",
+	"require": {
+		"silverstripe/cms": "^3.1",
+		"silverstripe/framework": "^3.1",
+		"silvershop/core": "^2.2"
+	}
+}
