@@ -1,3 +1,8 @@
+---
+Name: shop-multicurrency
+After:
+  - silvershop/config#shopconfig
+---
 #
 # Product Currencies settings
 #
@@ -25,12 +30,18 @@ ProductMultiCurrency:
 
 Product:
   extensions:
-    - SilverShop\MultiCurrency\ProductMultiCurrency
+    - SilverShop\MultiCurrency\Extensions\ProductMultiCurrencyExtension
 
 ProductVariation:
   extensions:    
-    - SilverShop\MultiCurrency\ProductMultiCurrency
+    - SilverShop\MultiCurrency\Extensions\ProductMultiCurrencyExtension
 
 Order:
   extensions:
-    - SilverShop\MultiCurrency\OrderExtension
+    - SilverShop\MultiCurrency\Extensions\OrderExtension
+
+## Silvershop Orderprocessor does not have any hooks for changing currency
+## So we have to replace it
+Injector:
+  OrderProcessor:
+    class: SilverShop\MultiCurrency\Checkout\OrderProcessor

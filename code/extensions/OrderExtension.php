@@ -1,15 +1,17 @@
 <?php
 
-namespace SilverShop\MultiCurrency;
+namespace SilverShop\MultiCurrency\Extensions;
 
 /*
  * Stores Currency and Domain details into an object
  */
 
+use Silvershop\MultiCurrency\Helper;
+
 class OrderExtension extends \DataExtension
 {
     private static $db = [
-        'Currency' => 'Varchar(3)',
+        'StoredCurrency'   => 'Varchar(3)', // cant be "Currency" because of core method
         'Domain'   => 'Varchar(100)',
     ];
 
@@ -22,23 +24,34 @@ class OrderExtension extends \DataExtension
             return user_error('ERR: You unable to order products from different domain.');
         }
 
-        $this->owner->setField('Locale', \Fluent::current_locale());
         $this->owner->setField('Domain', $currentDomain);
-        $this->owner->setField('Currency', ProductMultiCurrency::get_current_currency());
+
+        $this->owner->setField('StoredCurrency', Helper::get_current_currency());
     }
 
     public function updateCMSFields(\FieldList $fields)
     {
-        $domain = $this->owner->getField('Domain');
-        $currency = $this->owner->getField('Currency');
-
         $data = [
-            'Domain'   => $domain,
-            'Currency' => $currency
+            'Domain'   => $this->owner->getField('Domain'),
+            'Currency'   => $this->owner->getField('StoredCurrency'),
         ];
 
         $f = \LiteralField::create('Localization', $this->owner->customise($data)->renderWith('Order_Localization'));
 
         $fields->insertAfter('Addresses', $f);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoredCurrency()
+    {
+        $currency = $this->owner->getField("StoredCurrency");
+
+        if(!$currency){
+            $currency = \ProductMultiCurrency::defaultCurrencyObject()->getCurrency();
+        }
+
+        return $currency;
     }
 }
